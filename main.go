@@ -19,7 +19,9 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/health-check", healthCheckHandler)
+	appV1 := app.Group("/api/v1")
+
+	appV1.Get("/health-check", healthCheckHandler)
 
 	log.Fatal(app.Listen(":3000"))
 }
