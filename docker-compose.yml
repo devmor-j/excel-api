@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:8.0.0-rc15-jammy
+    restart: always
+    command:
+      - --auth
+    ports:
+      - 27017:27017
+    environment:
+      - MONGODB_DBNAME=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    env_file: .env

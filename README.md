@@ -2,6 +2,11 @@
 
 <!-- TODO: add api endpoints guide here -->
 
+## Desicions Made
+
+- Since http2 is not required, [fiber](https://github.com/gofiber/fiber) is chosen to run our http server but Go's http package could also serve well for this project provided that number of endpoints are kept small
+-
+
 ## Objective
 
 The goal of this task is to assess the candidate's ability to build a RESTful service using Golang, interact with a MongoDB database, generate an Excel file, and return the generated file.
@@ -37,3 +42,16 @@ The goal of this task is to assess the candidate's ability to build a RESTful se
 - A brief explanation of the chosen architecture and design patterns.
 
 _Note: If needed, you can add other features to the program to improve efficiency, security and speed._
+
+## Development
+
+Use docker or docker-compose to run a MongoDB instance.
+Also Provide a username and password for the database inside `.env` file.
+
+```sh
+docker run --name mongodb -p 27017:27017 -d mongo:8.0.0-rc15-jammy
+# or
+docker-compose up -d
+```
+
+You can run server using `go run main.go` or `make`
