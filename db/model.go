@@ -8,20 +8,20 @@ import (
 )
 
 type Student struct {
-	ID        primitive.ObjectID `json:"id" bson:"_id"`
-	StudentId int                `json:"studentId" bson:"student_id"`
-	FirstName string             `json:"firstName" bson:"first_name"`
-	LastName  string             `json:"lastName" bson:"last_name"`
-	Age       int                `json:"age" bson:"age"`
-	Email     string             `json:"email" bson:"email"`
-	Country   string             `json:"country" bson:"country"`
-	Major     string             `json:"major" bson:"major"`
-	GPA       float64            `json:"gpa" bson:"gpa"`
-	EntryDate time.Time          `json:"entryDate" bson:"entry_date"`
+	ID        primitive.ObjectID `json:"id" bson:"_id" xlsx:"-"`
+	StudentId int                `json:"studentId" bson:"student_id" xlsx:"Student ID"`
+	FirstName string             `json:"firstName" bson:"first_name" xlsx:"First Name"`
+	LastName  string             `json:"lastName" bson:"last_name" xlsx:"Last Name"`
+	Age       int                `json:"age" bson:"age" xlsx:"Age"`
+	Email     string             `json:"email" bson:"email" xlsx:"Email"`
+	Country   string             `json:"country" bson:"country" xlsx:"Country"`
+	Major     string             `json:"major" bson:"major" xlsx:"Major"`
+	GPA       float64            `json:"gpa" bson:"gpa" xlsx:"GPA"`
+	EntryDate time.Time          `json:"entryDate" bson:"entry_date" xlsx:"Entry Date"`
 }
 
-func (s *Student) FieldName(index int) string {
-	return reflect.TypeOf(*s).Field(index).Name
+func (s *Student) TagValue(index int) string {
+	return reflect.TypeOf(*s).Field(index).Tag.Get("xlsx")
 }
 
 func (s *Student) FieldValue(index int) any {

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"regexp"
 	"strconv"
 
 	"github.com/devmor-j/excel-api/db"
@@ -12,8 +11,6 @@ import (
 	"github.com/xuri/excelize/v2"
 	"go.mongodb.org/mongo-driver/bson"
 )
-
-var pascalToNormalRE = regexp.MustCompile("([a-z0–9])([A-Z])")
 
 func HealthCheckHandler(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"msg": "ok"})
@@ -38,15 +35,12 @@ func ExportExcelHandler(c *fiber.Ctx) error {
 	sheet := f.GetSheetName(0)
 	f.SetSheetName("Students", sheet)
 
-	// to omit object_id we need to decrement max column length
+	// TODO: find a better way to omit object_id
 	columnLength := reflect.TypeOf(students[0]).NumField() - 1
-
 	headTitles := make([]string, 0, columnLength)
 
 	for i := range columnLength {
-		// TODO: use struct tag to allow custom naming for xlsx
-		title := pascalToNormalRE.ReplaceAllString(students[0].FieldName(i+1), "$1 $2")
-		headTitles = append(headTitles, title)
+		headTitles = append(headTitles, students[0].TagValue(i+1))
 	}
 	f.SetSheetRow(sheet, "A1", &headTitles)
 
