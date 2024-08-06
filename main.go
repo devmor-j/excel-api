@@ -4,17 +4,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/devmor-j/excel-api/api"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
-
-func healthCheckHandler(c *fiber.Ctx) error {
-	return c.JSON(fiber.Map{"msg": "ok"})
-}
-
-func exportExcelHandler(c *fiber.Ctx) error {
-	return nil
-}
 
 func main() {
 	err := godotenv.Load()
@@ -26,8 +19,8 @@ func main() {
 
 	appV1 := app.Group("/api/v1")
 
-	appV1.Get("/health-check", healthCheckHandler)
-	appV1.Get("/export-excel", exportExcelHandler)
+	appV1.Get("/health-check", api.HealthCheckHandler)
+	appV1.Get("/export-excel", api.ExportExcelHandler)
 
 	log.Fatal(app.Listen(":" + os.Getenv("PORT")))
 }
