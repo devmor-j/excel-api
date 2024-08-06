@@ -1,6 +1,8 @@
 package db
 
 import (
+	"time"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -14,5 +16,5 @@ type Student struct {
 	Country   string             `json:"country" bson:"country"`
 	Major     string             `json:"major" bson:"major"`
 	GPA       float64            `json:"gpa" bson:"gpa"`
-	EntryDate string             `json:"entryDate" bson:"entry_date"`
+	EntryDate time.Time          `json:"entryDate" bson:"entry_date"`
 }

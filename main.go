@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/devmor-j/excel-api/api"
+	"github.com/devmor-j/excel-api/db"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
@@ -15,7 +16,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	// db.Seed()
+	db.Seed()
 
 	app := fiber.New()
 
