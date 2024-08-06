@@ -9,6 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/xuri/excelize/v2"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func HealthCheckHandler(c *fiber.Ctx) error {
@@ -19,13 +20,21 @@ func ExportExcelHandler(c *fiber.Ctx) error {
 	database := db.GetMongoDatabase()
 	studnetsCollection := database.Collection(db.CollectionStudnets)
 
-	cur, err := studnetsCollection.Find(context.TODO(), bson.D{})
+	filters := bson.D{}
+	opts := options.Find()
+
+	limit := c.QueryInt("limit")
+	if limit > 0 {
+		opts.SetLimit(int64(limit))
+	}
+
+	cur, err := studnetsCollection.Find(context.TODO(), filters, opts)
 	if err != nil {
 		return err
 	}
 
 	var students []db.Student
-	if err := cur.All(context.TODO(), &students); err != nil {
+	if err := cur.All(context.TODO(), &students); err != nil || len(students) == 0 {
 		return err
 	}
 

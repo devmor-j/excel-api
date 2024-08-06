@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -25,7 +24,7 @@ type SeedStudent struct {
 func ParseShortDate(timeValue string) time.Time {
 	t, err := time.Parse("02/01/2006", timeValue)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 
 	return t
