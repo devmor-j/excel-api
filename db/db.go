@@ -17,7 +17,7 @@ const (
 )
 
 const (
-	CollStudnets = "students"
+	CollectionStudnets = "students"
 )
 
 var (
@@ -60,7 +60,7 @@ func GetMongoDatabase() *mongo.Database {
 }
 
 func Seed() {
-	err := SeedStudentsColl()
+	err := SeedStudentsCollection()
 	if err != nil {
 		log.Fatal(err)
 	}

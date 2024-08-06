@@ -15,9 +15,9 @@ func HealthCheckHandler(c *fiber.Ctx) error {
 
 func ExportExcelHandler(c *fiber.Ctx) error {
 	database := db.GetMongoDatabase()
-	studnetsColl := database.Collection(db.CollStudnets)
+	studnetsCollection := database.Collection(db.CollectionStudnets)
 
-	cur, err := studnetsColl.Find(context.TODO(), bson.D{})
+	cur, err := studnetsCollection.Find(context.TODO(), bson.D{})
 	if err != nil {
 		return err
 	}

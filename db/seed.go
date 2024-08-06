@@ -34,9 +34,9 @@ func ParseShortDate(timeValue string) time.Time {
 	return t
 }
 
-func SeedStudentsColl() error {
+func SeedStudentsCollection() error {
 	database := GetMongoDatabase()
-	studnetsColl := database.Collection(CollStudnets)
+	studnetsCollection := database.Collection(CollectionStudnets)
 
 	var students = make([]any, 0, len(seedStudents))
 
