@@ -5,7 +5,9 @@
 ## Desicions Made
 
 - Since http2 is not required, [fiber](https://github.com/gofiber/fiber) is chosen to run our http server but Go's http package could also serve well for this project provided that number of endpoints are kept small
--
+- Since no mock data is provided, a seed generator was developed to create unique data and insert them into mongodb
+- Student and seed student types are separated to allow furthur modification and type conversion during seed process (ex: human date string to golang Time type)
+- Writing to spreadsheet performance can be faster using concurrency techniques
 
 ## Objective
 

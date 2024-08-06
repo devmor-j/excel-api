@@ -1,6 +1,7 @@
 package db
 
 import (
+	"reflect"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -17,4 +18,12 @@ type Student struct {
 	Major     string             `json:"major" bson:"major"`
 	GPA       float64            `json:"gpa" bson:"gpa"`
 	EntryDate time.Time          `json:"entryDate" bson:"entry_date"`
+}
+
+func (s *Student) FieldName(index int) string {
+	return reflect.TypeOf(*s).Field(index).Name
+}
+
+func (s *Student) FieldValue(index int) any {
+	return reflect.ValueOf(*s).Field(index)
 }
