@@ -2,9 +2,11 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -38,27 +40,45 @@ func SeedStudentsCollection() error {
 	database := GetMongoDatabase()
 	studnetsCollection := database.Collection(CollectionStudnets)
 
+	cur, err := studnetsCollection.Find(context.TODO(), bson.D{})
+	if err != nil {
+		return err
+	}
+	var dbStudents []Student
+	cur.All(context.TODO(), &dbStudents)
+
 	var students = make([]any, 0, len(seedStudents))
 
-	for _, v := range seedStudents {
+uniqueSeed:
+	for _, ss := range seedStudents {
+		for _, ds := range dbStudents {
+			if ds.StudentId == ss.StudentId {
+				continue uniqueSeed
+			}
+		}
+
 		var s Student
 
-		s.Age = v.Age
-		s.Country = v.Country
-		s.Email = v.Email
-		s.EntryDate = ParseShortDate(v.EntryDate)
-		s.FirstName = v.FirstName
-		s.GPA = v.GPA
+		s.Age = ss.Age
+		s.Country = ss.Country
+		s.Email = ss.Email
+		s.EntryDate = ParseShortDate(ss.EntryDate)
+		s.FirstName = ss.FirstName
+		s.GPA = ss.GPA
 		s.ID = primitive.NewObjectID()
-		s.LastName = v.LastName
-		s.Major = v.Major
-		s.StudentId = v.StudentId
+		s.LastName = ss.LastName
+		s.Major = ss.Major
+		s.StudentId = ss.StudentId
 
 		students = append(students, s)
 	}
 
-	if _, err := studnetsColl.InsertMany(context.TODO(), students); err != nil {
-		return err
+	if len(students) != 0 {
+		res, err := studnetsCollection.InsertMany(context.TODO(), students)
+		if err != nil {
+			return err
+		}
+		fmt.Println("SEED: Inserted", len(res.InsertedIDs), "Unique Students")
 	}
 
 	return nil
