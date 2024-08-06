@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"reflect"
 	"strconv"
 
@@ -52,9 +51,13 @@ func ExportExcelHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	if err := f.SaveAs("students.xlsx"); err != nil {
-		fmt.Println(err)
-	}
+	// if err := f.SaveAs("export.xlsx"); err != nil {
+	// 	fmt.Println(err)
+	// }
 
-	return nil
+	c.Response().Header.Set("Content-Type", "application/octet-stream")
+	c.Response().Header.Set("Content-Disposition", "attachment; filename=export.xlsx")
+	c.Response().Header.Set("Content-Transfer-Encoding", "binary")
+
+	return f.Write(c.Response().BodyWriter())
 }
