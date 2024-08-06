@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"log"
 	"os"
 	"sync"
 
@@ -11,7 +12,12 @@ import (
 )
 
 const (
-	dbUri = "mongodb://localhost:27017"
+	dbUri  = "mongodb://localhost:27017"
+	dbName = "excel_api"
+)
+
+const (
+	CollStudnets = "students"
 )
 
 var (
@@ -40,4 +46,22 @@ func GetMongoClient() (*mongo.Client, error) {
 	})
 
 	return clientInstance, clientInstanceError
+}
+
+func GetMongoDatabase() *mongo.Database {
+	client, err := GetMongoClient()
+	if err != nil {
+		return nil
+	}
+
+	database := client.Database(dbName)
+
+	return database
+}
+
+func Seed() {
+	err := SeedStudentsColl()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

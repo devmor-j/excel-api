@@ -15,6 +15,8 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	// db.Seed()
+
 	app := fiber.New()
 
 	appV1 := app.Group("/api/v1")
